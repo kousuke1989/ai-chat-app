@@ -6,7 +6,7 @@ import React, { useEffect, useState } from "react";
 import { ChatType } from "@/types";
 import { useAuth } from "@/context/AuthContext";
 import UserAvatar from "@/app/components/UserAvatar";
-import { BotMessageSquare } from "lucide-react";
+import { BotMessageSquare, Mic } from "lucide-react";
 import MessageDisplay from "@/app/components/MessageDisplay";
 
 interface Message {
@@ -64,9 +64,14 @@ export default function ChatMessage({
     <div className="flex flex-col gap-y-6 p-6 min-h-full">
       {messages.map((m) => {
         const isUser = m.sender === "user";
-        // content 自体に画像URLが入っているか判定（画像生成用）
+
+        // 画像生成の判定
         const isGeneratedImage =
           m.type === "image" && m.content.startsWith("http");
+
+        // 音声データの判定
+        const isAudioResponse =
+          m.type === "audio" && m.content.startsWith("http");
 
         return (
           <div
@@ -90,9 +95,9 @@ export default function ChatMessage({
             {/* 吹き出しエリア */}
             <div
               className={`p-4 rounded-2xl shadow-md border border-slate-100 bg-white text-slate-800 rounded-tl-none
-              max-w-[85%] sm:max-w-[60%] md:max-w-[45%] transition-all`}
+              max-w-[85%] sm:max-w-[60%] md:max-w-[50%] transition-all`}
             >
-              {/* 1. 【画像生成】content にURLが入っている場合 */}
+              {/* 【画像生成表示】 */}
               {isGeneratedImage && (
                 <div className="mb-2 rounded-lg overflow-hidden border border-slate-100 shadow-sm bg-slate-50">
                   <img
@@ -103,13 +108,30 @@ export default function ChatMessage({
                 </div>
               )}
 
-              {/* 2. 【通常テキスト・画像解析・音声】 */}
+              {/* 【テキスト表示】 */}
               <MessageDisplay
-                // 生成画像の場合は content (URL) を表示せず、空文字を渡す
-                markdown={isGeneratedImage ? "" : m.content}
-                type={m.type}
+                markdown={isGeneratedImage || isAudioResponse ? "" : m.content}
+                // 音声レスポンスの場合は "text" として渡すことで、MessageDisplay 側の二重表示を防止
+                type={isAudioResponse ? "text" : m.type}
                 imageUrls={m.imageUrls}
               />
+
+              {/* 【音声プレーヤー表示】★こちらを優先して表示 */}
+              {isAudioResponse && (
+                <div className="mt-2 p-3 bg-slate-50 rounded-xl border border-slate-100">
+                  <div className="flex items-center gap-2 mb-2 text-xs font-bold text-slate-500">
+                    <Mic size={14} className="text-blue-500" />
+                    AI Voice Response
+                  </div>
+                  <audio
+                    src={m.content}
+                    controls
+                    className="w-full h-10 min-w-[200px]"
+                  >
+                    お使いのブラウザは音声再生に対応していません。
+                  </audio>
+                </div>
+              )}
             </div>
           </div>
         );
