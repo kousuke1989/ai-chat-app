@@ -6,7 +6,6 @@ import {
   Mic,
   Sparkles,
   Github,
-  Zap,
 } from "lucide-react";
 
 export default function LandingPage() {
