@@ -1,4 +1,5 @@
 import { db } from "@/lib/firebase/firebaseAdmin";
+import { uploadToStorage } from "@/lib/firebase/storage";
 import { FieldValue } from "firebase-admin/firestore";
 import { NextResponse } from "next/server";
 import OpenAI from "openai";
@@ -12,7 +13,6 @@ const openai = new OpenAI({
 });
 
 export async function POST(req: Request) {
-  // messagesRef を catch でも使えるようにスコープを外に出す
   let messagesRef: FirebaseFirestore.CollectionReference | null = null;
 
   try {
@@ -38,21 +38,27 @@ export async function POST(req: Request) {
       created_at: FieldValue.serverTimestamp(),
     });
 
-    // B. gpt-image-2 で画像を生成
+    // B. gpt-image-2 で画像を生成（base64形式で受け取る）
     const response = await openai.images.generate({
       model: "gpt-image-2",
       prompt: prompt,
       n: 1,
-      size: size || "1024x1024",
+      size: (size || "1024x1024") as "1024x1024" | "1536x1024" | "1024x1536",
+      response_format: "b64_json",
     });
 
-    const imageUrl = response.data?.[0]?.url;
+    const b64 = response.data?.[0]?.b64_json;
 
-    if (!imageUrl) {
-      throw new Error("画像URLが取得できませんでした");
+    if (!b64) {
+      throw new Error("画像データが取得できませんでした");
     }
 
-    // C. 生成された画像 URL を AI の回答として保存
+    // C. base64 → Buffer に変換して Firebase Storage にアップロード
+    const imageBuffer = Buffer.from(b64, "base64");
+    const storagePath = `generated_images/${chatId}_${Date.now()}.png`;
+    const imageUrl = await uploadToStorage(imageBuffer, storagePath, "image/png");
+
+    // D. Firebase Storage の永続 URL を Firestore に保存
     await messagesRef.add({
       content: imageUrl,
       sender: "ai",
@@ -73,7 +79,6 @@ export async function POST(req: Request) {
 
     console.error("画像生成APIエラー:", errorMessage);
 
-    // DALL-E が失敗した場合、エラー内容をチャットに表示する
     if (messagesRef) {
       await messagesRef
         .add({
