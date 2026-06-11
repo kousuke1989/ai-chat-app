@@ -65,8 +65,7 @@ export default function LandingPage() {
               </div>
               <h3 className="text-xl font-bold mb-3">Image Generation</h3>
               <p className="text-slate-600 leading-relaxed">
-                言葉だけで新しい画像を生成。DALL-E
-                3との連携により、あなたの想像を高品質なビジュアルとして形にします。
+                言葉だけで新しい画像を生成。最新のAI画像モデルとの連携により、あなたの想像を高品質なビジュアルとして形にします。
               </p>
             </div>
 
