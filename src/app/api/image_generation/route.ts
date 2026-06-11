@@ -38,12 +38,12 @@ export async function POST(req: Request) {
       created_at: FieldValue.serverTimestamp(),
     });
 
-    // B. DALL-E 2 で画像を生成
+    // B. gpt-image-2 で画像を生成
     const response = await openai.images.generate({
-      model: "dall-e-2",
+      model: "gpt-image-2",
       prompt: prompt,
       n: 1,
-      size: size || "512x512",
+      size: size || "1024x1024",
     });
 
     const imageUrl = response.data?.[0]?.url;

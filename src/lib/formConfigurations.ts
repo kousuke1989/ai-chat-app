@@ -25,19 +25,19 @@ export const amountOptions = [
   },
 ];
 
-// DALL-E 2 対応サイズ
+// gpt-image-2 対応サイズ
 export const sizeOptions = [
   {
-    value: "256x256",
-    label: "256x256 (小)",
-  },
-  {
-    value: "512x512",
-    label: "512x512 (中)",
-  },
-  {
     value: "1024x1024",
-    label: "1024x1024 (大)",
+    label: "1024x1024 (正方形)",
+  },
+  {
+    value: "1536x1024",
+    label: "1536x1024 (横長)",
+  },
+  {
+    value: "1024x1536",
+    label: "1024x1536 (縦長)",
   },
 ];
 
@@ -45,7 +45,7 @@ const formConfig = {
   conversation: { schema: conversationSchema, defaultValues: { prompt: "" } },
   image_generation: {
     schema: imageGenerationSchema,
-    defaultValues: { prompt: "", amount: "1", size: "512x512" },
+    defaultValues: { prompt: "", amount: "1", size: "1024x1024" },
   },
   text_to_speech: {
     schema: textToSpeechSchema,
