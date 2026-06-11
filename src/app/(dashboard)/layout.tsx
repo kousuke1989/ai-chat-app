@@ -9,7 +9,10 @@ export default function DashboardLayout({
 }) {
   return (
     <div className="flex h-full w-full bg-blue-300">
-      <Sidebar />
+      {/* lg以上でのみサイドバーを表示 */}
+      <div className="hidden lg:flex lg:w-72 lg:shrink-0 h-full">
+        <Sidebar />
+      </div>
       <div className="flex flex-col flex-1 min-w-0 h-full">
         <Navbar />
         <main className="flex-1 overflow-y-auto relative bg-blue-300">

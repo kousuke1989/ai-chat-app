@@ -95,7 +95,7 @@ export default function ChatMessage({
             {/* 吹き出しエリア */}
             <div
               className={`p-4 rounded-2xl shadow-md border border-slate-100 bg-white text-slate-800 rounded-tl-none
-              max-w-[85%] sm:max-w-[60%] md:max-w-[50%] transition-all`}
+              max-w-[90%] sm:max-w-[75%] md:max-w-[60%] lg:max-w-[50%] transition-all`}
             >
               {/* 【画像生成表示】 */}
               {isGeneratedImage && (
