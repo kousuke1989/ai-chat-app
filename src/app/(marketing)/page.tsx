@@ -88,14 +88,25 @@ export default function LandingPage() {
       <section className="py-20 px-6 bg-slate-50 border-y">
         <div className="max-w-5xl mx-auto text-center">
           <h2 className="text-3xl font-bold mb-12">Application Interface</h2>
-          <div className="relative rounded-2xl overflow-hidden shadow-2xl border-8 border-white">
-            <Image
-              src="/screenshot.png"
-              alt="Application Screenshot"
-              width={1200}
-              height={675}
-              className="w-full object-cover"
-            />
+          <div className="flex flex-col gap-8">
+            <div className="relative rounded-2xl overflow-hidden shadow-2xl border-8 border-white">
+              <Image
+                src="/screenshot.png"
+                alt="Application Screenshot 1"
+                width={1200}
+                height={675}
+                className="w-full object-cover"
+              />
+            </div>
+            <div className="relative rounded-2xl overflow-hidden shadow-2xl border-8 border-white">
+              <Image
+                src="/screenshot2.png"
+                alt="Application Screenshot 2"
+                width={1200}
+                height={675}
+                className="w-full object-cover"
+              />
+            </div>
           </div>
         </div>
       </section>
