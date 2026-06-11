@@ -38,13 +38,12 @@ export async function POST(req: Request) {
       created_at: FieldValue.serverTimestamp(),
     });
 
-    // B. gpt-image-2 で画像を生成（base64形式で受け取る）
+    // B. gpt-image-2 で画像を生成（b64_json をデフォルトで返す。response_format 不要）
     const response = await openai.images.generate({
       model: "gpt-image-2",
       prompt: prompt,
       n: 1,
       size: (size || "1024x1024") as "1024x1024" | "1536x1024" | "1024x1536",
-      response_format: "b64_json",
     });
 
     const b64 = response.data?.[0]?.b64_json;
