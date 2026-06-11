@@ -60,12 +60,14 @@ export default function ChatForm({ chatId, chatType }: ChatFormProps) {
       form.reset({ prompt: "" });
 
       let currentId = await ensureChatId(promptValue);
+
+      // チャットページへ先に遷移し、API完了後にメッセージをリアルタイム表示させる
+      if (!chatId) router.push(`/${chatType}/${currentId}`);
+
       await axios.post(`/api/${chatType}`, {
         prompt: promptValue,
         chatId: currentId,
       });
-
-      if (!chatId) router.push(`/${chatType}/${currentId}`);
     } catch (error) {
       console.error(error);
     } finally {

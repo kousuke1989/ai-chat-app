@@ -25,19 +25,19 @@ export const amountOptions = [
   },
 ];
 
+// DALL-E 3 は 1024x1024 / 1792x1024 / 1024x1792 のみ対応
 export const sizeOptions = [
   {
-    value: "256x256",
-    label: "256x256",
-  },
-  {
-    value: "512x512",
-    label: "512x512",
-  },
-
-  {
     value: "1024x1024",
-    label: "1024x1024",
+    label: "1024x1024 (正方形)",
+  },
+  {
+    value: "1792x1024",
+    label: "1792x1024 (横長)",
+  },
+  {
+    value: "1024x1792",
+    label: "1024x1792 (縦長)",
   },
 ];
 
@@ -45,7 +45,7 @@ const formConfig = {
   conversation: { schema: conversationSchema, defaultValues: { prompt: "" } },
   image_generation: {
     schema: imageGenerationSchema,
-    defaultValues: { prompt: "", amount: "1", size: "256x256" },
+    defaultValues: { prompt: "", amount: "1", size: "1024x1024" },
   },
   text_to_speech: {
     schema: textToSpeechSchema,
